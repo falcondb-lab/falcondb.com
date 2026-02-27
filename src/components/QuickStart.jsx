@@ -1,73 +1,39 @@
 import { useState } from 'react'
 import { Copy, Check, Terminal } from 'lucide-react'
+import { useI18n } from '../i18n'
 
-const tabs = [
-  {
-    id: 'linux',
-    label: 'Linux / macOS',
-    steps: [
-      {
-        title: 'Clone & Build',
-        code: `git clone https://github.com/falcondb-lab/falcondb.git
-cd falcondb
-cargo build --release -p falcon_server`,
-      },
-      {
-        title: 'Start FalconDB',
-        code: `./target/release/falcon --config falcon.toml`,
-      },
-      {
-        title: 'Connect with psql',
-        code: `psql -h localhost -p 5433 -U falcon`,
-      },
-      {
-        title: 'Or run the full demo',
-        code: `chmod +x scripts/demo_standalone.sh
-./scripts/demo_standalone.sh`,
-      },
-    ],
-  },
-  {
-    id: 'windows',
-    label: 'Windows',
-    steps: [
-      {
-        title: 'Clone & Build',
-        code: `git clone https://github.com/falcondb-lab/falcondb.git
-cd falcondb
-cargo build --release -p falcon_server`,
-      },
-      {
-        title: 'Start FalconDB',
-        code: `.\\target\\release\\falcon.exe --config falcon.toml`,
-      },
-      {
-        title: 'Or run the full demo',
-        code: `.\\scripts\\demo_standalone.ps1`,
-      },
-    ],
-  },
-  {
-    id: 'replication',
-    label: 'Replication Demo',
-    steps: [
-      {
-        title: 'Start Primary + Replica',
-        code: `chmod +x scripts/demo_replication.sh
-./scripts/demo_replication.sh`,
-      },
-      {
-        title: 'E2E Failover Test',
-        code: `chmod +x scripts/e2e_two_node_failover.sh
-./scripts/e2e_two_node_failover.sh`,
-      },
-    ],
-  },
-]
+const codeSets = {
+  linux: [
+    `git clone https://github.com/falcondb-lab/falcondb.git\ncd falcondb\ncargo build --release -p falcon_server`,
+    `./target/release/falcon --config falcon.toml`,
+    `psql -h localhost -p 5433 -U falcon`,
+    `chmod +x scripts/demo_standalone.sh\n./scripts/demo_standalone.sh`,
+  ],
+  windows: [
+    `git clone https://github.com/falcondb-lab/falcondb.git\ncd falcondb\ncargo build --release -p falcon_server`,
+    `.\\target\\release\\falcon.exe --config falcon.toml`,
+    `.\\scripts\\demo_standalone.ps1`,
+  ],
+  replication: [
+    `chmod +x scripts/demo_replication.sh\n./scripts/demo_replication.sh`,
+    `chmod +x scripts/e2e_two_node_failover.sh\n./scripts/e2e_two_node_failover.sh`,
+  ],
+}
+
+const tabIds = ['linux', 'windows', 'replication']
 
 export default function QuickStart() {
+  const { t } = useI18n()
   const [activeTab, setActiveTab] = useState('linux')
-  const active = tabs.find((t) => t.id === activeTab)
+
+  const tabLabels = {
+    linux: t.quick.tabs.linux,
+    windows: t.quick.tabs.windows,
+    replication: t.quick.tabs.replication,
+  }
+
+  const activeSteps = t.quick.steps[activeTab]
+  const activeCodes = codeSets[activeTab]
 
   return (
     <section id="quickstart" className="relative py-24 lg:py-32">
@@ -77,36 +43,36 @@ export default function QuickStart() {
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-falcon-400 font-semibold text-sm tracking-wider uppercase mb-3">
-            Get Started
+            {t.quick.sectionLabel}
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Up and Running in <span className="gradient-text">Minutes</span>
+            {t.quick.title} <span className="gradient-text">{t.quick.titleHighlight}</span>
           </h2>
           <p className="max-w-xl mx-auto text-gray-400 text-lg">
-            Requires Rust 1.75+. Clone, build, connect — use any PostgreSQL client.
+            {t.quick.subtitle}
           </p>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-1 p-1 bg-white/[0.04] rounded-xl mb-6 max-w-fit mx-auto">
-          {tabs.map((tab) => (
+          {tabIds.map((id) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              key={id}
+              onClick={() => setActiveTab(id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeTab === tab.id
+                activeTab === id
                   ? 'bg-falcon-600 text-white shadow-lg shadow-falcon-600/25'
                   : 'text-gray-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              {tab.label}
+              {tabLabels[id]}
             </button>
           ))}
         </div>
 
         {/* Steps */}
         <div className="space-y-4">
-          {active.steps.map((step, i) => (
+          {activeSteps.map((step, i) => (
             <div key={i} className="glass-card overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2">
@@ -115,10 +81,10 @@ export default function QuickStart() {
                   </span>
                   <span className="text-gray-300 text-sm font-medium">{step.title}</span>
                 </div>
-                <CopyButton text={step.code} />
+                <CopyButton text={activeCodes[i]} />
               </div>
               <pre className="p-4 text-sm font-mono text-gray-300 overflow-x-auto leading-relaxed">
-                {step.code}
+                {activeCodes[i]}
               </pre>
             </div>
           ))}
@@ -129,11 +95,9 @@ export default function QuickStart() {
           <div className="flex items-start gap-3">
             <Terminal className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
             <div className="text-sm">
-              <p className="text-amber-200 font-medium">Prerequisites</p>
+              <p className="text-amber-200 font-medium">{t.quick.prereqTitle}</p>
               <p className="text-gray-400 mt-1">
-                Rust 1.75+ (<code className="text-amber-400/80">rustup update</code>), 
-                Git, and optionally <code className="text-amber-400/80">psql</code> for interactive sessions.
-                FalconDB listens on port <code className="text-amber-400/80">5433</code> by default.
+                {t.quick.prereqText}
               </p>
             </div>
           </div>
@@ -144,6 +108,7 @@ export default function QuickStart() {
 }
 
 function CopyButton({ text }) {
+  const { t } = useI18n()
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -160,12 +125,12 @@ function CopyButton({ text }) {
       {copied ? (
         <>
           <Check className="w-3 h-3 text-emerald-400" />
-          <span className="text-emerald-400">Copied</span>
+          <span className="text-emerald-400">{t.quick.copied}</span>
         </>
       ) : (
         <>
           <Copy className="w-3 h-3" />
-          Copy
+          {t.quick.copy}
         </>
       )}
     </button>

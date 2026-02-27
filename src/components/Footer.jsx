@@ -1,36 +1,30 @@
 import { Github, ExternalLink } from 'lucide-react'
+import { useI18n } from '../i18n'
 
-const footerLinks = [
-  {
-    title: 'Project',
-    links: [
-      { label: 'GitHub', href: 'https://github.com/falcondb-lab/falcondb', external: true },
-      { label: 'Releases', href: 'https://github.com/falcondb-lab/falcondb/releases', external: true },
-      { label: 'License (Apache-2.0)', href: 'https://github.com/falcondb-lab/falcondb/blob/main/LICENSE', external: true },
-      { label: 'Security Policy', href: 'https://github.com/falcondb-lab/falcondb/security', external: true },
-    ],
-  },
-  {
-    title: 'Documentation',
-    links: [
-      { label: 'Getting Started', href: '#quickstart' },
-      { label: 'Architecture', href: '#architecture' },
-      { label: 'Protocol Compatibility', href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/protocol_compatibility.md', external: true },
-      { label: 'Benchmark Matrix', href: 'https://github.com/falcondb-lab/falcondb/blob/main/benchmarks/README.md', external: true },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Roadmap', href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/roadmap.md', external: true },
-      { label: 'Contributing', href: 'https://github.com/falcondb-lab/falcondb/blob/main/CONTRIBUTING.md', external: true },
-      { label: 'Consistency Evidence', href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/consistency_evidence_map.md', external: true },
-      { label: 'RPO / RTO', href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/rpo_rto.md', external: true },
-    ],
-  },
+const footerHrefs = [
+  [
+    { href: 'https://github.com/falcondb-lab/falcondb', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/releases', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/LICENSE', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/security', external: true },
+  ],
+  [
+    { href: '#quickstart', external: false },
+    { href: '#architecture', external: false },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/protocol_compatibility.md', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/benchmarks/README.md', external: true },
+  ],
+  [
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/roadmap.md', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/CONTRIBUTING.md', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/consistency_evidence_map.md', external: true },
+    { href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/rpo_rto.md', external: true },
+  ],
 ]
 
 export default function Footer() {
+  const { t } = useI18n()
+
   return (
     <footer className="relative border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -44,7 +38,7 @@ export default function Footer() {
               <span className="text-lg font-bold text-white">FalconDB</span>
             </a>
             <p className="text-gray-500 text-sm leading-relaxed mb-4">
-              PG-compatible, distributed, memory-first OLTP database with deterministic transaction semantics.
+              {t.footer.description}
             </p>
             <a
               href="https://github.com/falcondb-lab/falcondb"
@@ -53,25 +47,25 @@ export default function Footer() {
               className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
             >
               <Github className="w-4 h-4" />
-              Star on GitHub
+              {t.footer.starOnGitHub}
             </a>
           </div>
 
           {/* Link columns */}
-          {footerLinks.map((col, i) => (
+          {t.footer.columns.map((col, i) => (
             <div key={i}>
               <h4 className="text-white font-semibold text-sm mb-4">{col.title}</h4>
               <ul className="space-y-2.5">
-                {col.links.map((link, j) => (
+                {col.links.map((label, j) => (
                   <li key={j}>
                     <a
-                      href={link.href}
-                      target={link.external ? '_blank' : undefined}
-                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      href={footerHrefs[i][j].href}
+                      target={footerHrefs[i][j].external ? '_blank' : undefined}
+                      rel={footerHrefs[i][j].external ? 'noopener noreferrer' : undefined}
                       className="inline-flex items-center gap-1 text-gray-400 hover:text-white text-sm transition-colors"
                     >
-                      {link.label}
-                      {link.external && <ExternalLink className="w-3 h-3" />}
+                      {label}
+                      {footerHrefs[i][j].external && <ExternalLink className="w-3 h-3" />}
                     </a>
                   </li>
                 ))}
@@ -83,10 +77,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} FalconDB Contributors. Apache-2.0 License.
+            {t.footer.copyright.replace('{year}', new Date().getFullYear())}
           </p>
           <p className="text-gray-600 text-xs">
-            Built with React &middot; Vite &middot; Tailwind CSS
+            {t.footer.builtWith}
           </p>
         </div>
       </div>

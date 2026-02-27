@@ -1,3 +1,4 @@
+import { I18nProvider } from './i18n'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
@@ -9,18 +10,20 @@ import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <Features />
-        <Architecture />
-        <Performance />
-        <QuickStart />
-        <Community />
-      </main>
-      <Footer />
-    </div>
+    <I18nProvider>
+      <div className="min-h-screen">
+        <Navbar />
+        <main>
+          <Hero />
+          <Features />
+          <Architecture />
+          <Performance />
+          <QuickStart />
+          <Community />
+        </main>
+        <Footer />
+      </div>
+    </I18nProvider>
   )
 }
 

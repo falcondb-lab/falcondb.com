@@ -1,6 +1,9 @@
 import { ArrowRight, Github, Terminal, Zap, Shield, Database } from 'lucide-react'
+import { useI18n } from '../i18n'
 
 export default function Hero() {
+  const { t } = useI18n()
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background effects */}
@@ -23,29 +26,29 @@ export default function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-falcon-500/10 border border-falcon-500/20 text-falcon-400 text-sm font-medium mb-8 animate-fade-in">
           <Zap className="w-3.5 h-3.5" />
-          Open Source &middot; Rust-Powered &middot; PG-Compatible
+          {t.hero.badge}
         </div>
 
         {/* Heading */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[1.05] mb-6 animate-slide-up">
-          <span className="text-white">The</span>{' '}
-          <span className="gradient-text">Memory-First</span>
+          <span className="text-white">{t.hero.titleThe}</span>{' '}
+          <span className="gradient-text">{t.hero.titleHighlight}</span>
           <br />
-          <span className="text-white">OLTP Database</span>
+          <span className="text-white">{t.hero.titleEnd}</span>
         </h1>
 
         {/* Subtitle */}
         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 leading-relaxed mb-10 animate-slide-up" style={{ animationDelay: '0.15s' }}>
-          PG-compatible, distributed, deterministic transaction semantics.
+          {t.hero.subtitle}
           <br className="hidden sm:block" />
-          Built in Rust for microsecond-level latency with provable consistency.
+          {t.hero.subtitleLine2}
         </p>
 
         {/* Stats row */}
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mb-10 animate-slide-up" style={{ animationDelay: '0.25s' }}>
-          <Stat icon={<Zap className="w-4 h-4 text-amber-400" />} value="< 1ms" label="p99 Latency" />
-          <Stat icon={<Shield className="w-4 h-4 text-emerald-400" />} value="ACID" label="Guaranteed" />
-          <Stat icon={<Database className="w-4 h-4 text-falcon-400" />} value="500+" label="SQL Functions" />
+          <Stat icon={<Zap className="w-4 h-4 text-amber-400" />} value={t.hero.statLatency} label={t.hero.statLatencyLabel} />
+          <Stat icon={<Shield className="w-4 h-4 text-emerald-400" />} value={t.hero.statAcid} label={t.hero.statAcidLabel} />
+          <Stat icon={<Database className="w-4 h-4 text-falcon-400" />} value={t.hero.statFunctions} label={t.hero.statFunctionsLabel} />
         </div>
 
         {/* CTA */}
@@ -55,7 +58,7 @@ export default function Hero() {
             className="group flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-falcon-600 to-falcon-500 hover:from-falcon-500 hover:to-falcon-400 text-white font-semibold rounded-xl shadow-lg shadow-falcon-500/25 transition-all duration-300 hover:shadow-falcon-500/40"
           >
             <Terminal className="w-4.5 h-4.5" />
-            Get Started
+            {t.hero.ctaGetStarted}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </a>
           <a
@@ -65,7 +68,7 @@ export default function Hero() {
             className="flex items-center gap-2 px-7 py-3.5 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white font-semibold rounded-xl transition-all duration-300"
           >
             <Github className="w-4.5 h-4.5" />
-            View on GitHub
+            {t.hero.ctaGitHub}
           </a>
         </div>
 
@@ -76,13 +79,13 @@ export default function Hero() {
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="ml-2 text-xs text-gray-500 font-mono">psql -h localhost -p 5433</span>
+              <span className="ml-2 text-xs text-gray-500 font-mono">{t.hero.terminalPrompt}</span>
             </div>
             <div className="p-5 text-left font-mono text-sm leading-relaxed">
               <Line prompt="$" cmd="cargo build --release -p falcon_server" />
               <Line prompt="$" cmd="./target/release/falcon --config falcon.toml" />
               <p className="text-emerald-400 mt-1">
-                FalconDB v1.2 — listening on 0.0.0.0:5433
+                {t.hero.terminalListening}
               </p>
               <p className="text-gray-600 mt-3">---</p>
               <Line prompt="falcon=#" cmd="CREATE TABLE users (id INT PRIMARY KEY, name TEXT);" />
