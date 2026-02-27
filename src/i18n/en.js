@@ -1,5 +1,4 @@
 export default {
-  // Navbar
   nav: {
     features: 'Features',
     architecture: 'Architecture',
@@ -10,7 +9,6 @@ export default {
     github: 'GitHub',
   },
 
-  // Hero
   hero: {
     badge: 'Open Source · Rust-Powered · PG-Compatible',
     titleThe: 'The',
@@ -30,7 +28,6 @@ export default {
     terminalListening: 'FalconDB v1.2 — listening on 0.0.0.0:5433',
   },
 
-  // Features
   features: {
     sectionLabel: 'Core Capabilities',
     title: 'Engineered for',
@@ -76,7 +73,6 @@ export default {
     ],
   },
 
-  // Architecture
   arch: {
     sectionLabel: 'System Design',
     title: 'Layered',
@@ -97,7 +93,6 @@ export default {
     txnSlow: 'GlobalTxn — cross-shard XA-2PC with prepare/commit',
   },
 
-  // Performance
   perf: {
     sectionLabel: 'Benchmarks',
     title: 'Built for',
@@ -129,7 +124,6 @@ export default {
     tableFeatures: ['PG Wire Compatibility', 'In-Memory First', 'Deterministic Commits', 'Fast-Path (No 2PC)', 'WAL Replication', 'Written in Rust', 'Open Source'],
   },
 
-  // Quick Start
   quick: {
     sectionLabel: 'Get Started',
     title: 'Up and Running in',
@@ -163,7 +157,6 @@ export default {
     copy: 'Copy',
   },
 
-  // Community
   community: {
     sectionLabel: 'Open Source',
     title: 'Join the',
@@ -188,7 +181,6 @@ export default {
     ],
   },
 
-  // Footer
   footer: {
     description: 'PG-compatible, distributed, memory-first OLTP database with deterministic transaction semantics.',
     starOnGitHub: 'Star on GitHub',

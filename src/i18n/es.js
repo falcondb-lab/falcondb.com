@@ -128,6 +128,7 @@ export default {
       { label: 'DDL en l\u00ednea + PITR + Aislamiento de recursos' },
     ],
   },
+
   footer: {
     description: 'Base de datos OLTP compatible con PG, distribuida, memory-first con sem\u00e1ntica de transacciones determinista.',
     starOnGitHub: 'Star en GitHub',

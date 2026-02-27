@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Copy, Check, Terminal } from 'lucide-react'
 import { useI18n } from '../i18n'
 
+// TODO: move these into standalone script snippets
 const codeSets = {
   linux: [
     `git clone https://github.com/falcondb-lab/falcondb.git\ncd falcondb\ncargo build --release -p falcon_server`,
@@ -53,7 +54,6 @@ export default function QuickStart() {
           </p>
         </div>
 
-        {/* Tabs */}
         <div className="flex gap-1 p-1 bg-white/[0.04] rounded-xl mb-6 max-w-fit mx-auto">
           {tabIds.map((id) => (
             <button
@@ -70,7 +70,6 @@ export default function QuickStart() {
           ))}
         </div>
 
-        {/* Steps */}
         <div className="space-y-4">
           {activeSteps.map((step, i) => (
             <div key={i} className="glass-card overflow-hidden">
@@ -90,7 +89,6 @@ export default function QuickStart() {
           ))}
         </div>
 
-        {/* Prerequisites note */}
         <div className="mt-8 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
           <div className="flex items-start gap-3">
             <Terminal className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
@@ -107,19 +105,17 @@ export default function QuickStart() {
   )
 }
 
-function CopyButton({ text }) {
+const CopyButton = ({ text }) => {
   const { t } = useI18n()
   const [copied, setCopied] = useState(false)
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   return (
     <button
-      onClick={handleCopy}
+      onClick={() => {
+        navigator.clipboard.writeText(text)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }}
       className="flex items-center gap-1 px-2 py-1 rounded-md text-xs text-gray-500 hover:text-gray-300 hover:bg-white/[0.06] transition-all"
     >
       {copied ? (

@@ -1,9 +1,9 @@
 export default {
   nav: {
     features: '기능',
-    architecture: '아키텍처',
-    performance: '성능',
-    quickstart: '빠른 시작',
+    arch: '아키텍처',
+    perf: '성능',
+    quick: '빠른 시작',
     community: '커뮤니티',
     docs: '문서',
     github: 'GitHub',

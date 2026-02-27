@@ -1,14 +1,4 @@
-import {
-  Zap,
-  Shield,
-  Database,
-  GitBranch,
-  Lock,
-  Layers,
-  RefreshCw,
-  Eye,
-  Binary,
-} from 'lucide-react'
+import { Zap, Shield, Database, GitBranch, Lock, Layers, RefreshCw, Eye, Binary } from 'lucide-react'
 import { useI18n } from '../i18n'
 
 const featureIcons = [
@@ -33,7 +23,6 @@ export default function Features() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
         <div className="text-center mb-16">
           <p className="text-falcon-400 font-semibold text-sm tracking-wider uppercase mb-3">
             {t.features.sectionLabel}
@@ -46,7 +35,6 @@ export default function Features() {
           </p>
         </div>
 
-        {/* Feature grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {t.features.items.map((f, i) => (
             <div

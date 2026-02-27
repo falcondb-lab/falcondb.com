@@ -22,14 +22,13 @@ const footerHrefs = [
   ],
 ]
 
-export default function Footer() {
+const Footer = () => {
   const { t } = useI18n()
 
   return (
     <footer className="relative border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <a href="#" className="flex items-center gap-2.5 mb-4">
               <img src="/logo.png" alt="FalconDB" className="w-8 h-8 rounded-lg object-contain" />
@@ -49,7 +48,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Link columns */}
           {t.footer.columns.map((col, i) => (
             <div key={i}>
               <h4 className="text-white font-semibold text-sm mb-4">{col.title}</h4>
@@ -72,7 +70,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
             {t.footer.copyright.replace('{year}', new Date().getFullYear())}
@@ -82,3 +79,5 @@ export default function Footer() {
     </footer>
   )
 }
+
+export default Footer

@@ -27,6 +27,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // close lang dropdown on outside click
   useEffect(() => {
     const onClick = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
@@ -47,7 +48,6 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
             <img src="/logo.png" alt="FalconDB" className="w-8 h-8 rounded-lg object-contain" />
             <span className="text-xl font-bold text-white group-hover:text-falcon-400 transition-colors">
@@ -55,7 +55,6 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Desktop links */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
@@ -68,9 +67,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-3">
-            {/* Theme toggle */}
             <button
               onClick={toggleTheme}
               className="flex items-center justify-center w-9 h-9 text-gray-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all"
@@ -78,7 +75,6 @@ export default function Navbar() {
             >
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            {/* Language dropdown */}
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen(!langOpen)}
@@ -127,7 +123,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="lg:hidden p-2 text-gray-400 hover:text-white"
@@ -136,7 +131,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu */}
         {mobileOpen && (
           <div className="lg:hidden pb-4 border-t border-white/[0.06] mt-2 pt-4 space-y-1">
             {navLinks.map((link) => (
@@ -149,7 +143,6 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            {/* Mobile language list */}
             <div className="px-3 pt-3 pb-1">
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Globe className="w-3 h-3" />

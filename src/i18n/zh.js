@@ -1,5 +1,4 @@
 export default {
-  // Navbar
   nav: {
     features: '核心特性',
     architecture: '系统架构',
@@ -10,7 +9,6 @@ export default {
     github: 'GitHub',
   },
 
-  // Hero
   hero: {
     badge: '开源 · Rust 驱动 · 兼容 PostgreSQL',
     titleThe: '内存优先的',
@@ -30,53 +28,24 @@ export default {
     terminalListening: 'FalconDB v1.2 — 监听 0.0.0.0:5433',
   },
 
-  // Features
   features: {
     sectionLabel: '核心能力',
     title: '为',
     titleHighlight: 'OLTP 性能而生',
     subtitle: '每个组件都为事务型工作负载专门设计——从内存优先的存储引擎到确定性提交协议。',
     items: [
-      {
-        title: '亚毫秒延迟',
-        desc: '单分片快速路径提交完全绕过 2PC。热路径上的内存 MVCC 实现零磁盘 I/O。',
-      },
-      {
-        title: '确定性提交保证',
-        desc: '如果 FalconDB 返回"已提交"，该事务将在任何单节点崩溃、故障转移和恢复中存活——零例外。',
-      },
-      {
-        title: 'PG 线协议',
-        desc: '使用 psql、pgbench 或任何 PostgreSQL 驱动连接。标准 OLTP 工作负载的即插即用兼容。',
-      },
-      {
-        title: '分布式架构',
-        desc: '基于分片路由和纪元管理的集群架构。吞吐量随分片数量线性扩展。',
-      },
-      {
-        title: 'MVCC + OCC 隔离',
-        desc: '快照隔离 + 乐观并发控制。CI 验证的 ACID 保证，中止率 < 1%。',
-      },
-      {
-        title: '基于 WAL 的复制',
-        desc: 'gRPC WAL 流式传输实现主从复制。自动提升和故障转移，零数据丢失。',
-      },
-      {
-        title: '双存储引擎',
-        desc: '内存 Rowstore 提供最大吞吐量，LSM 磁盘引擎支持超出内存容量的数据集。',
-      },
-      {
-        title: '50+ SHOW 命令',
-        desc: '深度可观测性：事务统计、GC 指标、复制延迟和 Prometheus 兼容端点。',
-      },
-      {
-        title: 'Rust 构建',
-        desc: '内存安全、零成本抽象、无畏并发。最小运行时开销，最大化性能表现。',
-      },
+      { title: '亚毫秒延迟', desc: '单分片快速路径提交完全绕过 2PC。热路径上的内存 MVCC 实现零磁盘 I/O。' },
+      { title: '确定性提交保证', desc: '如果 FalconDB 返回"已提交"，该事务将在任何单节点崩溃、故障转移和恢复中存活——零例外。' },
+      { title: 'PG 线协议', desc: '使用 psql、pgbench 或任何 PostgreSQL 驱动连接。标准 OLTP 工作负载的即插即用兼容。' },
+      { title: '分布式架构', desc: '基于分片路由和纪元管理的集群架构。吞吐量随分片数量线性扩展。' },
+      { title: 'MVCC + OCC 隔离', desc: '快照隔离 + 乐观并发控制。CI 验证的 ACID 保证，中止率 < 1%。' },
+      { title: '基于 WAL 的复制', desc: 'gRPC WAL 流式传输实现主从复制。自动提升和故障转移，零数据丢失。' },
+      { title: '双存储引擎', desc: '内存 Rowstore 提供最大吞吐量，LSM 磁盘引擎支持超出内存容量的数据集。' },
+      { title: '50+ SHOW 命令', desc: '深度可观测性：事务统计、GC 指标、复制延迟和 Prometheus 兼容端点。' },
+      { title: 'Rust 构建', desc: '内存安全、零成本抽象、无畏并发。最小运行时开销，最大化性能表现。' },
     ],
   },
 
-  // Architecture
   arch: {
     sectionLabel: '系统设计',
     title: '分层',
@@ -97,7 +66,6 @@ export default {
     txnSlow: 'GlobalTxn — 跨分片 XA-2PC，准备/提交',
   },
 
-  // Performance
   perf: {
     sectionLabel: '性能基准',
     title: '为',
@@ -129,7 +97,6 @@ export default {
     tableFeatures: ['PG 线协议兼容', '内存优先', '确定性提交', '快速路径（无 2PC）', 'WAL 复制', 'Rust 编写', '开源'],
   },
 
-  // Quick Start
   quick: {
     sectionLabel: '快速开始',
     title: '几分钟内',
@@ -163,7 +130,6 @@ export default {
     copy: '复制',
   },
 
-  // Community
   community: {
     sectionLabel: '开源社区',
     title: '加入',
@@ -188,7 +154,6 @@ export default {
     ],
   },
 
-  // Footer
   footer: {
     description: '兼容 PostgreSQL 的分布式内存优先 OLTP 数据库，具有确定性事务语义。',
     starOnGitHub: '在 GitHub 上 Star',

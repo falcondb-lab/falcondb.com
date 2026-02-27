@@ -24,7 +24,7 @@ const crates = [
   'falcon_bench',
 ]
 
-export default function Architecture() {
+const Architecture = () => {
   const { t } = useI18n()
 
   return (
@@ -45,7 +45,6 @@ export default function Architecture() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-10 items-start">
-          {/* Architecture layers */}
           <div className="space-y-3">
             {t.arch.layers.map((layer, i) => (
               <div
@@ -67,7 +66,6 @@ export default function Architecture() {
             ))}
           </div>
 
-          {/* Crate structure */}
           <div className="glass-card p-6 lg:p-8">
             <h3 className="text-white font-bold text-xl mb-2">{t.arch.crateTitle}</h3>
             <p className="text-gray-400 text-sm mb-6">
@@ -104,3 +102,5 @@ export default function Architecture() {
     </section>
   )
 }
+
+export default Architecture

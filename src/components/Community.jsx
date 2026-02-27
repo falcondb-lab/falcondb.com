@@ -1,31 +1,12 @@
 import { Github, BookOpen, MessageSquare, Heart, ArrowUpRight } from 'lucide-react'
 import { useI18n } from '../i18n'
 
+// order must match t.community.links
 const linkStyles = [
-  {
-    icon: <Github className="w-6 h-6" />,
-    href: 'https://github.com/falcondb-lab/falcondb',
-    color: 'group-hover:text-white',
-    bg: 'group-hover:bg-white/10',
-  },
-  {
-    icon: <BookOpen className="w-6 h-6" />,
-    href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/README.md',
-    color: 'group-hover:text-falcon-400',
-    bg: 'group-hover:bg-falcon-400/10',
-  },
-  {
-    icon: <MessageSquare className="w-6 h-6" />,
-    href: 'https://github.com/falcondb-lab/falcondb/discussions',
-    color: 'group-hover:text-cyan-400',
-    bg: 'group-hover:bg-cyan-400/10',
-  },
-  {
-    icon: <Heart className="w-6 h-6" />,
-    href: 'https://github.com/falcondb-lab/falcondb/blob/main/CONTRIBUTING.md',
-    color: 'group-hover:text-rose-400',
-    bg: 'group-hover:bg-rose-400/10',
-  },
+  { icon: <Github className="w-6 h-6" />, href: 'https://github.com/falcondb-lab/falcondb', color: 'group-hover:text-white', bg: 'group-hover:bg-white/10' },
+  { icon: <BookOpen className="w-6 h-6" />, href: 'https://github.com/falcondb-lab/falcondb/blob/main/docs/README.md', color: 'group-hover:text-falcon-400', bg: 'group-hover:bg-falcon-400/10' },
+  { icon: <MessageSquare className="w-6 h-6" />, href: 'https://github.com/falcondb-lab/falcondb/discussions', color: 'group-hover:text-cyan-400', bg: 'group-hover:bg-cyan-400/10' },
+  { icon: <Heart className="w-6 h-6" />, href: 'https://github.com/falcondb-lab/falcondb/blob/main/CONTRIBUTING.md', color: 'group-hover:text-rose-400', bg: 'group-hover:bg-rose-400/10' },
 ]
 
 const roadmapMeta = [
@@ -55,7 +36,6 @@ export default function Community() {
           </p>
         </div>
 
-        {/* Community links */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
           {t.community.links.map((link, i) => (
             <a
@@ -77,7 +57,6 @@ export default function Community() {
           ))}
         </div>
 
-        {/* Roadmap */}
         <div className="glass-card p-6 lg:p-8 max-w-3xl mx-auto">
           <h3 className="text-white font-bold text-xl mb-2">{t.community.roadmapTitle}</h3>
           <p className="text-gray-400 text-sm mb-6">

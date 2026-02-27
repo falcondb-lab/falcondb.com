@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========== Theme Variables ========== */
 :root {
   --c-white: 255 255 255;
   --c-gray-50:  249 250 251;
@@ -33,7 +32,6 @@
   --c-gray-950: 255 255 255;
 }
 
-/* ========== Base ========== */
 html {
   scroll-behavior: smooth;
 }
@@ -63,7 +61,6 @@ body {
   background-color: rgb(var(--c-gray-600));
 }
 
-/* ========== Utility Classes ========== */
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-falcon-400 via-blue-400 to-cyan-400;
 }

@@ -1,9 +1,9 @@
 export default {
   nav: {
     features: '機能',
-    architecture: 'アーキテクチャ',
-    performance: 'パフォーマンス',
-    quickstart: 'クイックスタート',
+    arch: 'アーキテクチャ',
+    perf: 'パフォーマンス',
+    quick: 'クイックスタート',
     community: 'コミュニティ',
     docs: 'ドキュメント',
     github: 'GitHub',
@@ -128,6 +128,7 @@ export default {
       { label: 'オンラインDDL + PITR + リソース分離' },
     ],
   },
+
   footer: {
     description: 'PG互換、分散型、メモリファーストOLTPデータベース。決定性トランザクションセマンティクス。',
     starOnGitHub: 'GitHubでスター',

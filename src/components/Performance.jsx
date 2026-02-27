@@ -7,14 +7,15 @@ const benchmarkStyles = [
   { icon: <BarChart3 className="w-5 h-5" />, color: 'text-falcon-400', bgColor: 'bg-falcon-400/10' },
 ]
 
+// true = feature supported
 const comparisonData = [
-  { falcon: true, pg: true, voltdb: false, singlestore: false },
-  { falcon: true, pg: false, voltdb: true, singlestore: true },
-  { falcon: true, pg: false, voltdb: true, singlestore: false },
-  { falcon: true, pg: false, voltdb: false, singlestore: false },
-  { falcon: true, pg: true, voltdb: true, singlestore: true },
-  { falcon: true, pg: false, voltdb: false, singlestore: false },
-  { falcon: true, pg: true, voltdb: true, singlestore: false },
+  [true,  true,  false, false],
+  [true,  false, true,  true],
+  [true,  false, true,  false],
+  [true,  false, false, false],
+  [true,  true,  true,  true],
+  [true,  false, false, false],
+  [true,  true,  true,  false],
 ]
 
 export default function Performance() {
@@ -38,7 +39,6 @@ export default function Performance() {
           </p>
         </div>
 
-        {/* Benchmark cards */}
         <div className="grid md:grid-cols-3 gap-5 mb-16">
           {t.perf.benchmarks.map((b, i) => (
             <div key={i} className="glass-card p-6 group hover:bg-white/[0.06] transition-all duration-300">
@@ -55,7 +55,6 @@ export default function Performance() {
           ))}
         </div>
 
-        {/* Comparison table */}
         <div className="glass-card overflow-hidden">
           <div className="px-6 py-5 border-b border-white/[0.06]">
             <h3 className="text-white font-bold text-lg">{t.perf.comparisonTitle}</h3>
@@ -76,18 +75,11 @@ export default function Performance() {
                 {t.perf.tableFeatures.map((feature, i) => (
                   <tr key={i} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
                     <td className="text-gray-300 px-6 py-3">{feature}</td>
-                    <td className="text-center px-4 py-3">
-                      <Check value={comparisonData[i].falcon} highlight />
-                    </td>
-                    <td className="text-center px-4 py-3">
-                      <Check value={comparisonData[i].pg} />
-                    </td>
-                    <td className="text-center px-4 py-3">
-                      <Check value={comparisonData[i].voltdb} />
-                    </td>
-                    <td className="text-center px-4 py-3">
-                      <Check value={comparisonData[i].singlestore} />
-                    </td>
+                    {comparisonData[i].map((val, j) => (
+                      <td key={j} className="text-center px-4 py-3">
+                        <Check value={val} highlight={j === 0} />
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

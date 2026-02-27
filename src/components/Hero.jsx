@@ -1,17 +1,15 @@
 import { ArrowRight, Github, Terminal, Zap, Shield, Database } from 'lucide-react'
 import { useI18n } from '../i18n'
 
-export default function Hero() {
+const Hero = () => {
   const { t } = useI18n()
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-falcon-600/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] bg-cyan-500/8 rounded-full blur-[100px]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-falcon-500/20 to-transparent" />
-        {/* Grid */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -23,13 +21,11 @@ export default function Hero() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 text-center">
-        {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-falcon-500/10 border border-falcon-500/20 text-falcon-400 text-sm font-medium mb-8 animate-fade-in">
           <Zap className="w-3.5 h-3.5" />
           {t.hero.badge}
         </div>
 
-        {/* Heading */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[1.05] mb-6 animate-slide-up">
           <span className="text-white">{t.hero.titleThe}</span>{' '}
           <span className="gradient-text">{t.hero.titleHighlight}</span>
@@ -37,21 +33,18 @@ export default function Hero() {
           <span className="text-white">{t.hero.titleEnd}</span>
         </h1>
 
-        {/* Subtitle */}
         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 leading-relaxed mb-10 animate-slide-up" style={{ animationDelay: '0.15s' }}>
           {t.hero.subtitle}
           <br className="hidden sm:block" />
           {t.hero.subtitleLine2}
         </p>
 
-        {/* Stats row */}
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mb-10 animate-slide-up" style={{ animationDelay: '0.25s' }}>
           <Stat icon={<Zap className="w-4 h-4 text-amber-400" />} value={t.hero.statLatency} label={t.hero.statLatencyLabel} />
           <Stat icon={<Shield className="w-4 h-4 text-emerald-400" />} value={t.hero.statAcid} label={t.hero.statAcidLabel} />
           <Stat icon={<Database className="w-4 h-4 text-falcon-400" />} value={t.hero.statFunctions} label={t.hero.statFunctionsLabel} />
         </div>
 
-        {/* CTA */}
         <div className="flex flex-wrap items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.35s' }}>
           <a
             href="#quickstart"
@@ -72,7 +65,6 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Terminal preview */}
         <div className="mt-16 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '0.5s' }}>
           <div className="glass-card glow-border overflow-hidden shadow-2xl shadow-falcon-950/50">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
@@ -104,6 +96,8 @@ export default function Hero() {
   )
 }
 
+export default Hero
+
 function Stat({ icon, value, label }) {
   return (
     <div className="flex items-center gap-2.5">
@@ -116,11 +110,9 @@ function Stat({ icon, value, label }) {
   )
 }
 
-function Line({ prompt, cmd }) {
-  return (
-    <p className="mt-1">
-      <span className="text-falcon-400">{prompt}</span>{' '}
-      <span className="text-gray-300">{cmd}</span>
-    </p>
-  )
-}
+const Line = ({ prompt, cmd }) => (
+  <p className="mt-1">
+    <span className="text-falcon-400">{prompt}</span>{' '}
+    <span className="text-gray-300">{cmd}</span>
+  </p>
+)

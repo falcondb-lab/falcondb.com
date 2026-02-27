@@ -1,5 +1,4 @@
 export default {
-  // Navbar
   nav: {
     features: 'Fonctionnalités',
     architecture: 'Architecture',
@@ -10,7 +9,6 @@ export default {
     github: 'GitHub',
   },
 
-  // Hero
   hero: {
     badge: 'Open Source · Propulsé par Rust · Compatible PG',
     titleThe: 'La base de données',
@@ -30,7 +28,6 @@ export default {
     terminalListening: 'FalconDB v1.2 — écoute sur 0.0.0.0:5433',
   },
 
-  // Features
   features: {
     sectionLabel: 'Capacités clés',
     title: 'Conçu pour la',
@@ -76,7 +73,6 @@ export default {
     ],
   },
 
-  // Architecture
   arch: {
     sectionLabel: 'Conception système',
     title: 'Architecture',
@@ -97,7 +93,6 @@ export default {
     txnSlow: 'GlobalTxn — XA-2PC cross-shard avec prepare/commit',
   },
 
-  // Performance
   perf: {
     sectionLabel: 'Benchmarks',
     title: 'Conçu pour la',
@@ -129,7 +124,6 @@ export default {
     tableFeatures: ['Compatibilité PG Wire', 'Memory-First', 'Validations déterministes', 'Fast-Path (sans 2PC)', 'Réplication WAL', 'Écrit en Rust', 'Open Source'],
   },
 
-  // Quick Start
   quick: {
     sectionLabel: 'Démarrage',
     title: 'Opérationnel en',
@@ -163,7 +157,6 @@ export default {
     copy: 'Copier',
   },
 
-  // Community
   community: {
     sectionLabel: 'Open Source',
     title: 'Rejoignez la',
@@ -188,7 +181,6 @@ export default {
     ],
   },
 
-  // Footer
   footer: {
     description: 'Base de données OLTP compatible PG, distribuée, memory-first avec sémantique de transaction déterministe.',
     starOnGitHub: 'Star sur GitHub',

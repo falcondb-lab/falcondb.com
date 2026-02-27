@@ -23,14 +23,10 @@ function detectLang() {
   if (typeof window === 'undefined') return 'en'
   const saved = localStorage.getItem('falcondb-lang')
   if (saved && languages[saved]) return saved
+  // try matching browser lang to supported locales
   const nav = navigator.language.toLowerCase()
-  if (nav.startsWith('zh')) return 'zh'
-  if (nav.startsWith('fr')) return 'fr'
-  if (nav.startsWith('de')) return 'de'
-  if (nav.startsWith('es')) return 'es'
-  if (nav.startsWith('ja')) return 'ja'
-  if (nav.startsWith('ko')) return 'ko'
-  return 'en'
+  const match = langMeta.find(m => nav.startsWith(m.code))
+  return match ? match.code : 'en'
 }
 
 const I18nContext = createContext()

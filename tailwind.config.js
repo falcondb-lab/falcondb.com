@@ -25,7 +25,7 @@ export default {
           950: '#142357',
         },
         white: 'rgb(var(--c-white) / <alpha-value>)',
-        'pure-white': '#ffffff',
+        'pure-white': '#ffffff', // actual white regardless of theme
         gray: {
           50:  'rgb(var(--c-gray-50)  / <alpha-value>)',
           100: 'rgb(var(--c-gray-100) / <alpha-value>)',

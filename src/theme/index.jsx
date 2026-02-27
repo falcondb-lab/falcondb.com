@@ -6,6 +6,7 @@ function detectTheme() {
   if (typeof window === 'undefined') return 'dark'
   const saved = localStorage.getItem('falcondb-theme')
   if (saved === 'light' || saved === 'dark') return saved
+  // respect OS-level preference
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
@@ -26,13 +27,11 @@ export function ThemeProvider({ children }) {
     localStorage.setItem('falcondb-theme', t)
   }, [])
 
-  const toggleTheme = useCallback(() => {
-    setThemeState((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark'
-      localStorage.setItem('falcondb-theme', next)
-      return next
-    })
-  }, [])
+  const toggleTheme = useCallback(() => setThemeState((prev) => {
+    const next = prev === 'dark' ? 'light' : 'dark'
+    localStorage.setItem('falcondb-theme', next)
+    return next
+  }), [])
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
