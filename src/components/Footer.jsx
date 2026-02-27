@@ -32,9 +32,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <a href="#" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-falcon-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">
-                F
-              </div>
+              <img src="/logo.png" alt="FalconDB" className="w-8 h-8 rounded-lg object-contain" />
               <span className="text-lg font-bold text-white">FalconDB</span>
             </a>
             <p className="text-gray-500 text-sm leading-relaxed mb-4">
@@ -78,9 +76,6 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
             {t.footer.copyright.replace('{year}', new Date().getFullYear())}
-          </p>
-          <p className="text-gray-600 text-xs">
-            {t.footer.builtWith}
           </p>
         </div>
       </div>

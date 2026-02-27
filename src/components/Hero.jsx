@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="flex flex-wrap items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.35s' }}>
           <a
             href="#quickstart"
-            className="group flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-falcon-600 to-falcon-500 hover:from-falcon-500 hover:to-falcon-400 text-white font-semibold rounded-xl shadow-lg shadow-falcon-500/25 transition-all duration-300 hover:shadow-falcon-500/40"
+            className="group flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-falcon-600 to-falcon-500 hover:from-falcon-500 hover:to-falcon-400 text-pure-white font-semibold rounded-xl shadow-lg shadow-falcon-500/25 transition-all duration-300 hover:shadow-falcon-500/40"
           >
             <Terminal className="w-4.5 h-4.5" />
             {t.hero.ctaGetStarted}

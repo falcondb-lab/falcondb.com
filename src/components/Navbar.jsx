@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, Github, ExternalLink, Globe, ChevronDown } from 'lucide-react'
+import { Menu, X, Github, ExternalLink, Globe, ChevronDown, Sun, Moon } from 'lucide-react'
 import { useI18n } from '../i18n'
+import { useTheme } from '../theme'
 
 export default function Navbar() {
   const { t, lang, setLanguage, langMeta } = useI18n()
+  const { theme, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
@@ -47,9 +49,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-falcon-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">
-              F
-            </div>
+            <img src="/logo.png" alt="FalconDB" className="w-8 h-8 rounded-lg object-contain" />
             <span className="text-xl font-bold text-white group-hover:text-falcon-400 transition-colors">
               FalconDB
             </span>
@@ -70,6 +70,14 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Theme toggle */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-9 h-9 text-gray-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all"
+              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
             {/* Language dropdown */}
             <div className="relative" ref={langRef}>
               <button
@@ -165,6 +173,13 @@ export default function Navbar() {
               </div>
             </div>
             <div className="flex gap-2 pt-3 px-3">
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {theme === 'dark' ? 'Light' : 'Dark'}
+              </button>
               <a
                 href="https://github.com/falcondb-lab/falcondb"
                 target="_blank"

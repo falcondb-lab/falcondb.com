@@ -61,7 +61,7 @@ export default function QuickStart() {
               onClick={() => setActiveTab(id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === id
-                  ? 'bg-falcon-600 text-white shadow-lg shadow-falcon-600/25'
+                  ? 'bg-falcon-600 text-pure-white shadow-lg shadow-falcon-600/25'
                   : 'text-gray-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
