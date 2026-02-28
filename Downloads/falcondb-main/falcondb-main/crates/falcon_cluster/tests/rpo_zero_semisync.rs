@@ -57,21 +57,42 @@ fn simple_schema() -> TableSchema {
     }
 }
 
-/// Returns [Insert, CommitTxn] so the row is visible after replay.
-fn insert_and_commit(id: i32) -> Vec<WalRecord> {
-    let row = OwnedRow::new(vec![Datum::Int32(id)]);
-    let txn_id = TxnId(id as u64 + 1000); // offset to avoid txn_id=0
-    vec![
+/// Returns an Insert-only WAL record (row is NOT yet visible — uncommitted).
+/// Use for lag / timeout tests where visibility doesn't matter.
+fn insert_record(id: i32) -> WalRecord {
+    WalRecord::Insert {
+        txn_id: TxnId(id as u64 + 1000),
+        table_id: TableId(1),
+        row: OwnedRow::new(vec![Datum::Int32(id)]),
+    }
+}
+
+/// Ship [Insert, CommitTxn] through `group.ship_wal_record_sync(SemiSync)` so
+/// the row is visible after the replica replays both records.
+fn ship_sync_committed(
+    group: &ShardReplicaGroup,
+    id: i32,
+    timeout: Duration,
+) -> Result<u64, falcon_common::error::FalconError> {
+    let txn_id = TxnId(id as u64 + 1000);
+    let commit_ts = Timestamp(id as u64 + 2000);
+    // Ship Insert — blocks until 1 replica acks.
+    let lsn = group.ship_wal_record_sync(
         WalRecord::Insert {
             txn_id,
             table_id: TableId(1),
-            row,
+            row: OwnedRow::new(vec![Datum::Int32(id)]),
         },
-        WalRecord::CommitTxn {
-            txn_id,
-            commit_ts: falcon_common::types::Timestamp(id as u64 + 2000),
-        },
-    ]
+        SyncMode::SemiSync,
+        timeout,
+    )?;
+    // Ship CommitTxn — also blocks until 1 replica acks.
+    group.ship_wal_record_sync(
+        WalRecord::CommitTxn { txn_id, commit_ts },
+        SyncMode::SemiSync,
+        timeout,
+    )?;
+    Ok(lsn)
 }
 
 fn row_exists(engine: &StorageEngine, id: i32) -> bool {
@@ -92,39 +113,42 @@ fn test_semisync_blocks_until_replica_acks() {
 
     // Extract Arc handles the replica thread needs — no Mutex on the whole group.
     let log = group.log.clone();
-    let replica_storage = group.replicas[0].storage.clone();
 
     let log_for_thread = log.clone();
+    let replica_storage_t = group.replicas[0].storage.clone();
     let replica_thread = std::thread::spawn(move || {
-        // Give the primary a tiny head-start to enter append_and_wait.
-        std::thread::sleep(Duration::from_millis(20));
-        // Apply whatever is in the log and ack.
-        let pending = log_for_thread.read_from(0);
-        let mut write_sets = std::collections::HashMap::new();
-        let mut max_lsn = 0u64;
-        for rec in &pending {
-            falcon_cluster::replication::apply_wal_record_to_engine(
-                &replica_storage,
-                &rec.record,
-                &mut write_sets,
-            )
-            .unwrap();
-            max_lsn = rec.lsn;
+        // Continuously poll the log, apply each record, and ack immediately.
+        let mut applied_lsn = 0u64;
+        let deadline = std::time::Instant::now() + Duration::from_secs(10);
+        while std::time::Instant::now() < deadline {
+            let pending = log_for_thread.read_from(applied_lsn);
+            if pending.is_empty() {
+                std::thread::sleep(Duration::from_millis(2));
+                continue;
+            }
+            let mut write_sets = std::collections::HashMap::new();
+            for rec in &pending {
+                falcon_cluster::replication::apply_wal_record_to_engine(
+                    &replica_storage_t,
+                    &rec.record,
+                    &mut write_sets,
+                )
+                .unwrap();
+                applied_lsn = applied_lsn.max(rec.lsn);
+                log_for_thread.sync_ack.record_ack(0, applied_lsn);
+            }
         }
-        // ACK: wakes the primary's append_and_wait.
-        log_for_thread.sync_ack.record_ack(0, max_lsn);
     });
 
-    // Primary ships with SemiSync — blocks until replica acks.
-    let lsn = group
-        .ship_wal_record_sync(insert_record(42), SyncMode::SemiSync, Duration::from_secs(5))
+    // Primary ships Insert+CommitTxn with SemiSync — each blocks until replica acks.
+    let lsn = ship_sync_committed(&group, 42, Duration::from_secs(5))
         .expect("SemiSync should succeed once replica acks");
 
     replica_thread.join().unwrap();
 
     assert!(lsn > 0, "LSN must be positive");
 
-    // Verify replica has the row.
+    // Verify replica has the committed row.
     assert!(
         row_exists(&group.replicas[0].storage, 42),
         "replica must have row id=42 after SemiSync commit"
@@ -141,9 +165,9 @@ fn test_semisync_timeout_when_replica_frozen() {
 
     // No replica thread — nobody will ack.
     let result = group.ship_wal_record_sync(
-        insert_record(99),
+        insert_record(99), // Insert only; commit doesn't matter for timeout test
         SyncMode::SemiSync,
-        Duration::from_millis(100), // short timeout
+        Duration::from_millis(100),
     );
 
     assert!(
@@ -177,15 +201,13 @@ fn test_async_allows_replica_to_lag_semisync_does_not() {
         "Async: replica should lag behind primary"
     );
 
-    // Now SemiSync: must fail quickly since we're still not running a replica thread.
+    // SemiSync with no running replica thread must time out immediately.
     let result = group.ship_wal_record_sync(
         insert_record(2),
         SyncMode::SemiSync,
         Duration::from_millis(50),
     );
     assert!(result.is_err(), "SemiSync with frozen replica must time out");
-
-    // If we manually ack, it would succeed — tested separately (test 1).
 }
 
 // ---------------------------------------------------------------------------
@@ -208,7 +230,7 @@ fn test_sync_mode_requires_all_replica_acks() {
     });
 
     let result = group.ship_wal_record_sync(
-        insert_record(7),
+        insert_record(7), // visibility not checked; just testing ack gate
         SyncMode::Sync,
         Duration::from_secs(2),
     );
@@ -251,18 +273,17 @@ fn test_primary_crash_rpo_zero_data_survives_on_replica() {
     let replica_storage = group.replicas[0].storage.clone();
     let log = group.log.clone();
 
-    // The replica thread runs concurrently — it polls the log, applies, and acks.
-    // It loops until it has seen at least 2 records (one per commit below).
+    // The replica thread polls the log, applies each record, acks immediately.
+    // Two rows × (Insert + CommitTxn) = 4 WAL records total.
     let log_t = log.clone();
     let replica_storage_t = replica_storage.clone();
     let replica_thread = std::thread::spawn(move || {
         let mut applied_lsn = 0u64;
-        let mut seen = 0usize;
         let deadline = std::time::Instant::now() + Duration::from_secs(10);
-        while seen < 2 && std::time::Instant::now() < deadline {
+        while std::time::Instant::now() < deadline {
             let pending = log_t.read_from(applied_lsn);
             if pending.is_empty() {
-                std::thread::sleep(Duration::from_millis(5));
+                std::thread::sleep(Duration::from_millis(2));
                 continue;
             }
             let mut write_sets = std::collections::HashMap::new();
@@ -274,20 +295,14 @@ fn test_primary_crash_rpo_zero_data_survives_on_replica() {
                 )
                 .unwrap();
                 applied_lsn = applied_lsn.max(rec.lsn);
-                seen += 1;
-                // Ack immediately after each apply — unblocks primary's append_and_wait.
                 log_t.sync_ack.record_ack(0, applied_lsn);
             }
         }
     });
 
-    // Primary commits two rows with SemiSync (RPO = 0).
-    group
-        .ship_wal_record_sync(insert_record(100), SyncMode::SemiSync, Duration::from_secs(5))
-        .expect("SemiSync commit row 100");
-    group
-        .ship_wal_record_sync(insert_record(101), SyncMode::SemiSync, Duration::from_secs(5))
-        .expect("SemiSync commit row 101");
+    // Primary commits two rows with SemiSync (Insert + CommitTxn each, RPO = 0).
+    ship_sync_committed(&group, 100, Duration::from_secs(5)).expect("SemiSync commit row 100");
+    ship_sync_committed(&group, 101, Duration::from_secs(5)).expect("SemiSync commit row 101");
 
     replica_thread.join().unwrap();
 
@@ -325,7 +340,6 @@ fn test_sync_mode_required_acks() {
 #[test]
 fn test_append_and_wait_async_returns_immediately() {
     let log = ReplicationLog::new();
-    let schema = simple_schema();
     // required_acks=0 == Async mode: no wait at all.
     let lsn = log
         .append_and_wait(insert_record(5), 0, Duration::from_millis(1))
