@@ -1,0 +1,44 @@
+[package]
+name = "falcon_server"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+name = "falcon_server"
+path = "src/lib.rs"
+
+[[bin]]
+name = "falcon"
+path = "src/main.rs"
+
+[dependencies]
+falcon_common = { path = "../falcon_common" }
+falcon_storage = { path = "../falcon_storage" }
+falcon_txn = { path = "../falcon_txn" }
+falcon_executor = { path = "../falcon_executor" }
+falcon_protocol_pg = { path = "../falcon_protocol_pg" }
+falcon_observability = { path = "../falcon_observability" }
+falcon_cluster = { path = "../falcon_cluster" }
+falcon_raft = { path = "../falcon_raft" }
+falcon_sql_frontend = { path = "../falcon_sql_frontend" }
+falcon_planner = { path = "../falcon_planner" }
+tokio.workspace = true
+tokio-util.workspace = true
+tonic.workspace = true
+clap.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+tracing-appender.workspace = true
+toml.workspace = true
+serde.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows-service = "0.7"
+
+[features]
+default = []
+lsm = ["falcon_storage/lsm"]
+
+[dev-dependencies]
+serde_json.workspace = true

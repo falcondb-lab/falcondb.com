@@ -1,0 +1,19 @@
+[package]
+name = "falcon_bench"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = []
+lsm = ["falcon_storage/lsm"]
+
+[dependencies]
+falcon_common = { path = "../falcon_common" }
+falcon_cluster = { path = "../falcon_cluster" }
+falcon_storage = { path = "../falcon_storage" }
+falcon_txn = { path = "../falcon_txn" }
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio = { version = "1", features = ["rt", "rt-multi-thread", "macros", "time"] }
+tokio-postgres = { version = "0.7", features = [] }
